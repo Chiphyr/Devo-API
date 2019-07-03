@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname+`/index.html`));
 });
 
-app.post('/v1/channels/:id/send', (req, res) => {
+app.post('/restcord/channels/:id/send', (req, res) => {
     if(!req.body.content){
         err('Send: No content.');
         return res.status(400).send({
@@ -41,7 +41,7 @@ app.post('/v1/channels/:id/send', (req, res) => {
     });
 });
 
-app.post('/v1/users/:id/dm', (req, res) => {
+app.post('/restcord/users/:id/dm', (req, res) => {
     if(!req.body.content){
         err("DM: No content.");
         return res.status(400).send({
@@ -58,7 +58,7 @@ app.post('/v1/users/:id/dm', (req, res) => {
     });
 });
 
-app.get('/v1/guilds', (req, res) => {
+app.get('/restcord/guilds', (req, res) => {
     let guilds = client.guilds;
     suc('Guilds given.');
     return res.status(200).send({
@@ -68,7 +68,7 @@ app.get('/v1/guilds', (req, res) => {
     });
 });
 
-app.get('/v1/channels', (req, res) => {
+app.get('/restcord/channels', (req, res) => {
     let channels = client.channels;
     suc('Channels given.');
     return res.status(200).send({
@@ -78,7 +78,7 @@ app.get('/v1/channels', (req, res) => {
     });
 });
 
-app.get('/v1/users', (req, res) => {
+app.get('/restcord/users', (req, res) => {
     let users = client.users;
     suc('Users given.');
     return res.status(200).send({
@@ -88,7 +88,7 @@ app.get('/v1/users', (req, res) => {
     });
 });
 
-app.post('/v1/guilds/:guildid/users/:userid/ban', (req, res) => {
+app.post('/restcord/guilds/:guildid/users/:userid/ban', (req, res) => {
     let guild = client.guilds.get(`${req.params.guildid}`);
     let member = guild.members.get(`${req.params.userid}`);
     member.ban();
@@ -99,7 +99,7 @@ app.post('/v1/guilds/:guildid/users/:userid/ban', (req, res) => {
     });
 });
 
-app.post('/v1/guilds/:guildid/users/:userid/kick', (req, res) => {
+app.post('/restcord/guilds/:guildid/users/:userid/kick', (req, res) => {
     let guild = client.guilds.get(`${req.params.guildid}`);
     let member = guild.members.get(`${req.params.userid}`);
     member.kick();
@@ -110,7 +110,7 @@ app.post('/v1/guilds/:guildid/users/:userid/kick', (req, res) => {
     });
 });
 
-app.get('/v1/users/:id', (req, res) => {
+app.get('/restcord/users/:id', (req, res) => {
     let user = client.users.get(`${req.params.id}`);
     suc('User given.');
     return res.status(200).send({
@@ -120,7 +120,7 @@ app.get('/v1/users/:id', (req, res) => {
     });
 });
 
-app.get(`/v1/channels/:id`, (req, res) => {
+app.get(`/restcord/channels/:id`, (req, res) => {
     let channel = client.channels.get(`${req.params.id}`);
     suc('Channel given.');
     return res.status(200).send({
@@ -130,7 +130,7 @@ app.get(`/v1/channels/:id`, (req, res) => {
     });
 });
 
-app.get('/v1/guilds/:id', (req, res) => {
+app.get('/restcord/guilds/:id', (req, res) => {
     let guild = client.guilds.get(`${req.params.id}`);
     suc('Guild given.');
     return res.status(200).send({
@@ -140,7 +140,7 @@ app.get('/v1/guilds/:id', (req, res) => {
     });
 });
 
-app.delete('/v1/channels/:id', (req, res) => {
+app.delete('/restcord/channels/:id', (req, res) => {
     let channel = client.channels.get(`${req.params.id}`);
     channel.delete();
     suc('Deleted a channel.');
