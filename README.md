@@ -25,3 +25,22 @@ Lastly, the `whitelist`. This contains the IP addresses that the app will allow.
 
 ## Running
 To run the application, in the terminal/command prompt just type `node app.js`. You should be able to access the API from `localhost:port` where `port` is replaced by the port you set in the config file. If the port is 80, you only need to go to `localhost`.
+
+---
+
+# Making your first requests
+Let's get into the actual thing. Here I'll refer to your main URL, probably `localhost`, which you got earlier, as `host`. If you've port forwarded, this may be a domain, like `example.com`.
+
+## Getting a User
+To get a user, it's simple. Just open `host/restcord/users/userid` where userid is replaced the ID of the user in your web browser. This'll output all we could find about them.
+
+If you're to be making requests often, you should **definitely** get 'Postman'. It's an easy app to make requests to the API. Just get it at https://www.getpostman.com/downloads/.
+
+## Sending a Message
+Now, with Postman, enter `host/restcord/channels/channelid/send` (where channelid is the ID of the channel) in the box that says 'Enter request URL'. In the dropdown next to the box, select `POST`.
+
+You're set with the URL now. Next is the body. Go to the 'Body' menu, and click 'raw'. Then next to that, select `JSON` in the dropdown that says 'Text'.
+
+Now you should see a box to write text in. We're going to type the following: `{"content": "the message to send"}`. Of course replace 'the message to send' field with the message you would like to send!
+
+Now, it's as simple as clicking send.
