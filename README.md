@@ -6,7 +6,7 @@ I have made this public, so feel free to use the tutorial below to use it for yo
 ## Installing
 To start off, download this repository as a ZIP file. Follow by extracting it. That's the main thing downloaded! Now you need the dependencies.
 
-If you don't have node.js installed, gte it at https://nodejs.org/.
+If you don't have node.js installed, get it at https://nodejs.org/.
 
 Alrighty. To get the dependencies, open a terminal/command prompt window and paste in ```npm i express && npm i express-ipfilter && npm i body-parser && npm i discordjs/discord.js && npm i chalk && npm i path```. This is what the app relies on.
 
