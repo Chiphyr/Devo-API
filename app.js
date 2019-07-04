@@ -5,8 +5,15 @@ const Discord = require('discord.js');
 const chalk = require('chalk');
 const path = require('path');
 const config = require("./config.json");
+
+function suc(){ console.log(chalk.green.italic('[SUCCESS]') + " " + chalk.bold(arguments[0])); };
+function info(){ console.log(chalk.blue.italic('[INFO]') + " " + chalk.bold(arguments[0])); };
+function err(){ console.log(chalk.red.italic('[ERROR]') + " " + chalk.bold(arguments[0])); };
+
 global.client = new Discord.Client();
-client.login(config.token)
+client.login(config.token).then(() => {
+    suc(`Logged into Discord as ${client.user.username}, serving ${client.guilds.size} servers with ${client.users.size} users.`);
+});
 
 const app = express();
 let ips = config.whitelist;
@@ -14,10 +21,6 @@ app.use(ipfilter(ips, {mode: "allow"}));
 app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
-function suc(){ console.log(chalk.green.italic('[SUCCESS]') + " " + chalk.bold(arguments[0])); };
-function info(){ console.log(chalk.blue.italic('[INFO]') + " " + chalk.bold(arguments[0])); };
-function err(){ console.log(chalk.red.italic('[ERROR]') + " " + chalk.bold(arguments[0])); };
 
 app.get('/', (req, res) => {
     res.status(200);
