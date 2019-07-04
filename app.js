@@ -9,7 +9,6 @@ global.client = new Discord.Client();
 client.login(config.token)
 
 const app = express();
-config.whitelist.forEach(i => i = "::ffff:" + i);
 let ips = config.whitelist;
 app.use(ipfilter(ips, {mode: "allow"}));
 app.set('view engine', 'ejs');

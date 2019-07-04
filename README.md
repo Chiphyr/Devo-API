@@ -21,7 +21,7 @@ Change the `port` option to the port you'd like the app to listen on. The defaul
 
 Secondly, there's the `token`. Just change the value there to your bot token that you can get from https://discordapp.com/developers/applications/.
 
-Lastly, the `whitelist`. This contains the IP addresses that the app will allow. Change the value there to your IP address, which you can find by googling 'what is my ip'. You can add to this list like so: `["ip 1", "ip 2", "ip 3", "etc"]`.
+Lastly, the `whitelist`. This contains the IP addresses that the app will allow. Change the value there to your IP address, which you can find by googling 'what is my ip'. You can add to this list like so: `["ip 1", "ip 2", "ip 3", "etc"]`. **Note: All IP's must start with `::ffff:`. For example: `::ffff:192.168.0.1`.
 
 ## Running
 To run the application, in the terminal/command prompt just type `node app.js`. You should be able to access the API from `localhost:port` where `port` is replaced by the port you set in the config file. If the port is 80, you only need to go to `localhost`.
