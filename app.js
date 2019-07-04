@@ -12,6 +12,7 @@ const app = express();
 config.whitelist.forEach(i => i = "::ffff:" + i);
 let ips = config.whitelist;
 app.use(ipfilter(ips, {mode: "allow"}));
+app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -21,7 +22,7 @@ function err(){ console.log(chalk.red.italic('[ERROR]') + " " + chalk.bold(argum
 
 app.get('/', (req, res) => {
     res.status(200);
-    res.sendFile(path.join(__dirname+`/index.html`));
+    res.render('home');
 });
 
 app.post('/restcord/channels/:id/send', (req, res) => {

@@ -8,7 +8,7 @@ To start off, download this repository as a ZIP file. Follow by extracting it. T
 
 If you don't have node.js installed, get it at https://nodejs.org/.
 
-Alrighty. To get the dependencies, open a terminal/command prompt window and paste in ```npm i express && npm i express-ipfilter && npm i body-parser && npm i discordjs/discord.js && npm i chalk && npm i path```. This is what the app relies on.
+Alrighty. To get the dependencies, open a terminal/command prompt window and type ```npm i```. This is what the app relies on.
 
 Once that's done, let's go on to the next step!
 
