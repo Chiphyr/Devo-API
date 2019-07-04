@@ -12,7 +12,7 @@ function err(){ console.log(chalk.red.italic('[ERROR]') + " " + chalk.bold(argum
 
 global.client = new Discord.Client();
 client.login(config.token).then(() => {
-    suc(`Logged into Discord as ${client.user.username}, serving ${client.guilds.size} servers with ${client.users.size} users.\n\n`);
+    suc(`Logged into Discord as ${client.user.username}, serving ${client.guilds.size} servers.\n\n`);
 });
 
 const app = express();
