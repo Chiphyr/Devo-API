@@ -41,7 +41,7 @@ app.post('/restcord/channels/:id/send', (req, res) => {
     });
 });
 
-app.post('/restcord/users/:id/dm', (req, res) => {
+app.post('/restcord/users/:id/send', (req, res) => {
     if(!req.body.content){
         err("DM: No content.");
         return res.status(400).send({
