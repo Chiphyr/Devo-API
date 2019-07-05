@@ -45,6 +45,7 @@ app.post('/restcord/channels/:id/send', (req, res) => {
         });
     } catch (e) {
         err('Send: 500 Internal Server Error');
+        err(e);
         return res.status(500).send({
             success: false,
             message: 'The message could not be sent.'
@@ -70,6 +71,7 @@ app.post('/restcord/users/:id/send', (req, res) => {
         });
     } catch(e){
         err('DM: 500 Internal Server Error');
+        err(e);
         return res.status(500).send({
             success: false,
             message: 'The DM could not be sent.'
@@ -106,6 +108,7 @@ app.get('/restcord/channels', (req, res) => {
         });
     } catch (e) {
         err('Channels: 500 Internal Server Error');
+        err(e);
         return res.status(500).send({
             success: false,
             message: 'I could not gather the channels.'
@@ -124,6 +127,7 @@ app.get('/restcord/users', (req, res) => {
         });
     } catch (e) {
         err('Users: 500 Internal Server Error');
+        err(e);
         return res.status(500).send({
             success: false,
             message: "I could not gather the users."
@@ -143,6 +147,7 @@ app.post('/restcord/guilds/:guildid/users/:userid/ban', (req, res) => {
         });
     } catch (e) {
         err('Ban: 500 Internal Server Error');
+        err(e);
         return res.status(500).send({
             success: false,
             message: 'I could not ban that member.'
@@ -162,6 +167,7 @@ app.post('/restcord/guilds/:guildid/users/:userid/kick', (req, res) => {
         });
     } catch (e) {
         err('Kick: 500 Internal Server Error');
+        err(e);
         return res.status(500).send({
             success: false,
             message: 'I could not kick that member.'
@@ -180,6 +186,7 @@ app.get('/restcord/users/:id', (req, res) => {
         });
     } catch (e) {
         err('User: 500 Internal Server Error');
+        err(e);
         return res.status(500).send({
             success: false,
             message: 'I could not get that user.'
@@ -198,6 +205,7 @@ app.get(`/restcord/channels/:id`, (req, res) => {
         });
     } catch (e) {
         err('Channel: 500 Internal Server Error');
+        err(e);
         return res.status(500).send({
             success: false,
             message: 'I could not get that channel.'
@@ -216,6 +224,7 @@ app.get('/restcord/guilds/:id', (req, res) => {
         });
     } catch (e) {
         err('Guild: 500 Internal Server Error');
+        err(e);
         return res.status(500).send({
             success: true,
             message: 'I could not gather that guild.'
@@ -234,17 +243,12 @@ app.delete('/restcord/channels/:id', (req, res) => {
         });
     } catch (e) {
         err('Channel Delete: 500 Internal Server Error');
+        err(e);
         return res.status(500).send({
             success: false,
             message: 'I could not get that channel.'
         });
     }
-});
-
-app.get('/test', (req, res) => {
-    return res.status(418).send({
-        e: "lol"
-    });
 });
 
 app.get('*', (req, res) => {
