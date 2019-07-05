@@ -241,12 +241,14 @@ app.delete('/restcord/channels/:id', (req, res) => {
     }
 });
 
+app.get('/test', (req, res) => {
+    return res.status(418).send({
+        e: "lol"
+    });
+});
+
 app.get('*', (req, res) => {
     err('404 Not Found');
-    res.status(404).send({
-        success: false,
-        message: 'We could not find what you were looking for...'
-    });
     return res.render('404');
 });
 
