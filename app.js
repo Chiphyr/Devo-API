@@ -1,35 +1,30 @@
+const { Client } = require('discord.js');
+const { token, port, whitelist } = require("./config.json");
+const { err, suc, info } = require('./Internals/Log');
 const express = require('express');
-const ipfilter = require('express-ipfilter').IpFilter;
 const bodyParser = require("body-parser");
-const Discord = require('discord.js');
-const chalk = require('chalk');
-const path = require('path');
-const config = require("./config.json");
-
-function suc(){ console.log(chalk.green.italic('[SUCCESS]') + " " + chalk.bold(arguments[0])); };
-function info(){ console.log(chalk.blue.italic('[INFO]') + " " + chalk.bold(arguments[0])); };
-function err(){ console.log(chalk.red.italic('[ERROR]') + " " + chalk.bold(arguments[0])); };
-
-global.client = new Discord.Client();
-client.login(config.token).then(() => {
-    suc(`Logged into Discord as ${client.user.username}, serving ${client.guilds.size} servers.\n\n`);
-});
-
 const app = express();
-let ips = config.whitelist;
-app.use(ipfilter(ips, {mode: "allow"}));
+
+global.client = new Client();
+
 app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use((req, res, next) => {
+    const ip = req.ip.split(":").slice(3)[0];
+    
+    if (whitelist.includes(ip)) return next();
+    else return res.status(403).render('403');
+});
+
 app.get('/', (req, res) => {
-    res.status(200);
     res.render('home');
 });
 
-app.post('/restcord/channels/:id/send', (req, res) => {
-    try{
-        if(!req.body.content){
+app.post('/channels/:id/send', (req, res) => {
+    try {
+        if (!req.body.content) {
             err('Send: 400 Bad Request');
             return res.status(400).send({
                 success: false,
@@ -38,13 +33,13 @@ app.post('/restcord/channels/:id/send', (req, res) => {
         };
         let channel = client.channels.get(`${req.params.id}`);
         let m = channel.send(`${req.body.content}`);
-        suc('Message: 201 Created');
+        suc('Send Message: 201 Created');
         return res.status(201).send({
             success: true,
             message: 'The message has been sent.'
         });
     } catch (e) {
-        err('Send: 500 Internal Server Error');
+        err('Send Message: 500 Internal Server Error');
         err(e);
         return res.status(500).send({
             success: false,
@@ -53,9 +48,9 @@ app.post('/restcord/channels/:id/send', (req, res) => {
     };
 });
 
-app.post('/restcord/users/:id/send', (req, res) => {
-    try{
-        if(!req.body.content){
+app.post('/users/:id/send', (req, res) => {
+    try {
+        if (!req.body.content) {
             err("DM: 400 Bad Request");
             return res.status(400).send({
                 success: false,
@@ -69,7 +64,7 @@ app.post('/restcord/users/:id/send', (req, res) => {
             success: true,
             message: 'The DM has been sent.'
         });
-    } catch(e){
+    } catch (e) {
         err('DM: 500 Internal Server Error');
         err(e);
         return res.status(500).send({
@@ -79,8 +74,8 @@ app.post('/restcord/users/:id/send', (req, res) => {
     }
 });
 
-app.get('/restcord/guilds', (req, res) => {
-    try{
+app.get('/guilds', (req, res) => {
+    try {
         let guilds = client.guilds;
         suc('Guilds: 200 OK');
         return res.status(200).send({
@@ -88,7 +83,7 @@ app.get('/restcord/guilds', (req, res) => {
             message: `I gathered the guilds successfully.`,
             guilds
         });
-    } catch(e){
+    } catch (e) {
         err('Guilds: 500 Internal Server Error');
         return res.status(500).send({
             success: true,
@@ -97,7 +92,7 @@ app.get('/restcord/guilds', (req, res) => {
     }
 });
 
-app.get('/restcord/channels', (req, res) => {
+app.get('/channels', (req, res) => {
     try {
         let channels = client.channels;
         suc('Channels: 200 OK');
@@ -116,7 +111,7 @@ app.get('/restcord/channels', (req, res) => {
     }
 });
 
-app.get('/restcord/users', (req, res) => {
+app.get('/users', (req, res) => {
     try {
         let users = client.users;
         suc('Users: 200 OK');
@@ -135,7 +130,26 @@ app.get('/restcord/users', (req, res) => {
     }
 });
 
-app.post('/restcord/guilds/:guildid/users/:userid/ban', (req, res) => {
+app.get('/emojis', (req, res) => {
+    try {
+        let emojis = client.emojis;
+        suc('Emojis: 200 OK');
+        return res.status(200).send({
+            success: true,
+            message: "I gathered the emojis.",
+            emojis
+        });
+    } catch (e) {
+        err("Emojis: 500 Internal Server Error");
+        err(e);
+        return res.status(500).send({
+            success: false,
+            message: 'I could not gather the emojis.'
+        });
+    }
+});
+
+app.post('/guilds/:guildid/users/:userid/ban', (req, res) => {
     try {
         let guild = client.guilds.get(`${req.params.guildid}`);
         let member = guild.members.get(`${req.params.userid}`);
@@ -155,7 +169,7 @@ app.post('/restcord/guilds/:guildid/users/:userid/ban', (req, res) => {
     }
 });
 
-app.post('/restcord/guilds/:guildid/users/:userid/kick', (req, res) => {
+app.post('/guilds/:guildid/users/:userid/kick', (req, res) => {
     try {
         let guild = client.guilds.get(`${req.params.guildid}`);
         let member = guild.members.get(`${req.params.userid}`);
@@ -175,7 +189,7 @@ app.post('/restcord/guilds/:guildid/users/:userid/kick', (req, res) => {
     }
 });
 
-app.get('/restcord/users/:id', (req, res) => {
+app.get('/users/:id', (req, res) => {
     try {
         let user = client.users.get(`${req.params.id}`);
         suc('User: 200 OK');
@@ -194,7 +208,7 @@ app.get('/restcord/users/:id', (req, res) => {
     }
 });
 
-app.get(`/restcord/channels/:id`, (req, res) => {
+app.get(`/channels/:id`, (req, res) => {
     try {
         let channel = client.channels.get(`${req.params.id}`);
         suc('Channel: 200 OK');
@@ -213,7 +227,7 @@ app.get(`/restcord/channels/:id`, (req, res) => {
     }
 });
 
-app.get('/restcord/guilds/:id', (req, res) => {
+app.get('/guilds/:id', (req, res) => {
     try {
         let guild = client.guilds.get(`${req.params.id}`);
         suc('Guild: 200 OK');
@@ -232,7 +246,26 @@ app.get('/restcord/guilds/:id', (req, res) => {
     }
 });
 
-app.delete('/restcord/channels/:id', (req, res) => {
+app.get('/emojis/:id', (req, res) => {
+    try {
+        let emoji = client.emojis.get(`${req.params.id}`);
+        suc('Emoji: 200 OK');
+        return res.status(200).send({
+            success: true,
+            message: "I got that emoji.",
+            emoji
+        });
+    } catch (e) {
+        err('Emoji: 500 Internal Server Error');
+        err(e);
+        return res.status(500).send({
+            success: false,
+            message: 'I could not get that emoji.'
+        });
+    }
+});
+
+app.delete('/channels/:id', (req, res) => {
     try {
         let channel = client.channels.get(`${req.params.id}`);
         channel.delete();
@@ -251,17 +284,15 @@ app.delete('/restcord/channels/:id', (req, res) => {
     }
 });
 
-app.get('*', (req, res) => {
-    err('404 Not Found');
-    res.status(404);
-    return res.render('404');
-});
+app.get('*', (...res) => res.render('404'));
 
-app.listen(config.port, () => {
+app.listen(port, () => {
     console.log(chalk.bold.underline.green("RESTcord.js") + " by " + chalk.bold("Chiphyr\n"))
 
-    info(`The server is running on port ${config.port}.\n`);
-    info(`Whitelisted IP's:`);
-    ips.forEach(ip => info(ip.split(":").slice(3)));
-    console.log("\n");
+    info(`The server is running on port ${port}.\n`);
+    info(`Whitelisted IP's:\n${whitelist.join('\n')}\n`);
+});
+
+client.login(token).then(() => {
+    suc(`Logged into Discord as ${client.user.username}, serving ${client.guilds.size} servers.\n\n`);
 });
