@@ -4,6 +4,7 @@ const { err, suc, info } = require('./Internals/Log');
 const express = require('express');
 const bodyParser = require("body-parser");
 const app = express();
+const chalk = require('chalk');
 
 global.client = new Client();
 
