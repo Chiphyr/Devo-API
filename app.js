@@ -288,7 +288,7 @@ app.delete('/channels/:id', (req, res) => {
     }
 });
 
-app.get('*', (...res) => res.render('404'));
+app.get('*', (req, res) => res.render('404'));
 
 app.listen(port, () => {
     console.log(chalk.bold.underline.green("RESTcord.js") + " by " + chalk.bold("Chiphyr\n"))
