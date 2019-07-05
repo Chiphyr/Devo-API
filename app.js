@@ -6,6 +6,10 @@ const bodyParser = require("body-parser");
 const app = express();
 const chalk = require('chalk');
 
+function suc() { console.log(chalk.green.italic('[SUCCESS]') + " " + chalk.bold(arguments[0])); };
+function info() { console.log(chalk.blue.italic('[INFO]') + " " + chalk.bold(arguments[0])); };
+function err() { console.log(chalk.red.italic('[ERROR]') + " " + chalk.bold(arguments[0])); };
+
 global.client = new Client();
 
 app.set('view engine', 'ejs');
