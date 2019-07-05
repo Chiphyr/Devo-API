@@ -253,6 +253,7 @@ app.delete('/restcord/channels/:id', (req, res) => {
 
 app.get('*', (req, res) => {
     err('404 Not Found');
+    res.status(404);
     return res.render('404');
 });
 
