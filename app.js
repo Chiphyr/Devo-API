@@ -1,6 +1,5 @@
 const { Client } = require('discord.js');
 const { token, port, whitelist } = require("./config.json");
-const { err, suc, info } = require('./Internals/Log');
 const express = require('express');
 const bodyParser = require("body-parser");
 const app = express();
